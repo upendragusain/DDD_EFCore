@@ -4,9 +4,8 @@ using System.Text;
 
 namespace App
 {
-    public class Course
+    public class Course : Entity
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; }
     }
 }

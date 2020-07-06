@@ -4,13 +4,12 @@ using System.Text;
 
 namespace App
 {
-    public class Student
+    public class Student : Entity
     {
         //EF core uses refection to assign values to the backing fields for properties
         // hence you can use private setters
         // you can also entirely remove setters
         // only for primitive types!
-        public long Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
         public virtual Course FavoriteCourse { get; }

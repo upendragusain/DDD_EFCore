@@ -13,16 +13,15 @@ namespace App
 
             using (var context = new SchoolContext(connectionString, true))
             {
-                Student student1 = context.Students.Find(1L);
-                Console.WriteLine(student1.Email);
+                Student student = context.Students.Find(1L);
+                var course = student.FavoriteCourse;
 
-                var s1 = context.Students.Single(_ => _.Id == 1L);// TOP(2)
-                var s2 = context.Students.SingleOrDefault(_ => _.Id == 1L);// TOP(2)
-                var s3 = context.Students.First(_ => _.Id == 1L);// TOP(1)
-                var s4 = context.Students.FirstOrDefault(_ => _.Id == 1L);// TOP(1)
+                var course2 = context.Courses.SingleOrDefault(_ => _.Id == course.Id);
 
-                // from cache
-                Student student2 = context.Students.Find(1L);
+                bool result = course == course2;
+                bool result2 = ReferenceEquals(course, course2);
+                bool result3 = course.Equals(course2);
+                
             }
 
             Console.ReadLine();
