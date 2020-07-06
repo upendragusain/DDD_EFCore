@@ -50,7 +50,13 @@ namespace App
                 x.Property(p => p.Id).HasColumnName("StudentID");
                 x.Property(p => p.Email);
                 x.Property(p => p.Name);
-                x.Property(p => p.FavoriteCourseId);
+
+                // has one course which has many students
+                // many to one (many studenst may have the same favourite course)
+                // .WithMany(c => c.Students) will set the navigation property on course entity back to student entity
+                // getting all the students who have that curse as thier fav course
+                // but we don't want that (only student to course)
+                x.HasOne(p => p.FavoriteCourse).WithMany();
             });
 
             modelBuilder.Entity<Course>(x =>

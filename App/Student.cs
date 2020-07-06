@@ -9,17 +9,26 @@ namespace App
         //EF core uses refection to assign values to the backing fields for properties
         // hence you can use private setters
         // you can also entirely remove setters
+        // only for primitive types!
         public long Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
-        public long FavoriteCourseId { get; }
+        public Course FavoriteCourse { get; }
+
+        //to satisfy the orm (EF), EF can apparently still access it, perhaps with reflection?
+        //needed as the other ctor has a no primitive type as a parameter
+        //System.InvalidOperationException: 'No suitable constructor found for entity type 'Student'. The following constructors had parameters that could not be bound to properties of the entity type: cannot bind 'favoriteCourse' in 'Student(string name, string email, Course favoriteCourse)'.'
+        private Student()
+        {
+
+        }
 
         public Student(string name, 
-            string email, long favoriteCourseId)
+            string email, Course favoriteCourse)
         {
             Name = name;
             Email = email;
-            FavoriteCourseId = favoriteCourseId;
+            FavoriteCourse = favoriteCourse;
         }
     }
 }
