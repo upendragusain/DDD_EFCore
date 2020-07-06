@@ -1,27 +1,45 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace App
 {
     public sealed class SchoolContext : DbContext
     {
+        private readonly string _conectionString;
+        private readonly bool _useConsoleLogger;
+
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
+
         public SchoolContext()
         {
 
         }
 
-        public SchoolContext(DbContextOptions<SchoolContext> options)
-            : base(options)
+        public SchoolContext(string conectionString, bool useConsoleLogger)
         {
+            this._conectionString = conectionString;
+            this._useConsoleLogger = useConsoleLogger;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EFCoreDDD;Integrated Security=True;");
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddFilter((category, loglevel) =>
+                    category == DbLoggerCategory.Database.Command.Name && loglevel == LogLevel.Information)
+                .AddConsole();
+            });
+
+            optionsBuilder
+                .UseSqlServer(_conectionString);
+
+            if (_useConsoleLogger)
+            {
+                optionsBuilder
+                    .UseLoggerFactory(loggerFactory)
+                    .EnableSensitiveDataLogging();
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
