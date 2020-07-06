@@ -37,6 +37,7 @@ namespace App
             if (_useConsoleLogger)
             {
                 optionsBuilder
+                    .UseLazyLoadingProxies()
                     .UseLoggerFactory(loggerFactory)
                     .EnableSensitiveDataLogging();
             }

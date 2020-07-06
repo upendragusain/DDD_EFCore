@@ -17,9 +17,9 @@ namespace App
                 Console.WriteLine($"w/o include loading: {student?.FavoriteCourse?.Name}");
 
                 // once the below line is executed
-                var student2 = context.Students
-                    .Include(s => s.FavoriteCourse)
-                    .SingleOrDefault(x => x.Id == 1);
+                //var student2 = context.Students
+                //    .Include(s => s.FavoriteCourse)
+                //    .SingleOrDefault(x => x.Id == 1);
 
                 //Console.WriteLine(student2.FavoriteCourse.Name);
                 Console.WriteLine($"After include loading, context is updated: {student?.FavoriteCourse?.Name}");
