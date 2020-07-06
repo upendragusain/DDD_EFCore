@@ -13,16 +13,16 @@ namespace App
 
             using (var context = new SchoolContext(connectionString, true))
             {
-                Student student = context.Students.Find(1L);
-                Console.WriteLine($"w/o include loading: {student?.FavoriteCourse?.Name}");
+                Student student1 = context.Students.Find(1L);
+                Console.WriteLine(student1.Email);
 
-                // once the below line is executed
-                //var student2 = context.Students
-                //    .Include(s => s.FavoriteCourse)
-                //    .SingleOrDefault(x => x.Id == 1);
+                var s1 = context.Students.Single(_ => _.Id == 1L);// TOP(2)
+                var s2 = context.Students.SingleOrDefault(_ => _.Id == 1L);// TOP(2)
+                var s3 = context.Students.First(_ => _.Id == 1L);// TOP(1)
+                var s4 = context.Students.FirstOrDefault(_ => _.Id == 1L);// TOP(1)
 
-                //Console.WriteLine(student2.FavoriteCourse.Name);
-                Console.WriteLine($"After include loading, context is updated: {student?.FavoriteCourse?.Name}");
+                // from cache
+                Student student2 = context.Students.Find(1L);
             }
 
             Console.ReadLine();
