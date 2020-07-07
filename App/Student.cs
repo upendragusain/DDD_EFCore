@@ -14,7 +14,9 @@ namespace App
         public string Email { get; private set; }
         public virtual Course FavoriteCourse { get; }
 
-        public virtual ICollection<Enrollment> Enrollments { get; set; }
+        //change enrollments to private readonly since we don't want clients to be able to modify it
+        private readonly List<Enrollment> _enrollments = new List<Enrollment>();
+        public virtual IReadOnlyCollection<Enrollment> Enrollments => _enrollments;
 
         //to satisfy the orm (EF), EF can apparently still access it (after change to protected), perhaps with reflection?
         //needed as the other ctor has a no primitive type as a parameter

@@ -14,6 +14,8 @@ namespace App
             using (var context = new SchoolContext(connectionString, true))
             {
                 Student student = context.Students.Find(1L);
+
+                //student.Enrollments.can't be mutated!
             }
 
             Console.ReadLine();
