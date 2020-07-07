@@ -23,6 +23,7 @@ namespace App
 
             // this will be true even for entities that are a result of different db calls
             // perhaps due to EF indetity map cache, it stored it as the same entity after retrival
+            // ** Referential Equality, if you request the same object 2 times the dbcontext will give you 2 references to the same object in memory
             if (ReferenceEquals(this, other))
                 return true;
 

@@ -14,14 +14,6 @@ namespace App
             using (var context = new SchoolContext(connectionString, true))
             {
                 Student student = context.Students.Find(1L);
-                var course = student.FavoriteCourse;
-
-                var course2 = context.Courses.SingleOrDefault(_ => _.Id == course.Id);
-
-                bool result = course == course2;
-                bool result2 = ReferenceEquals(course, course2);
-                bool result3 = course.Equals(course2);
-                
             }
 
             Console.ReadLine();

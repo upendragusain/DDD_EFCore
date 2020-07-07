@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace App
@@ -13,7 +14,8 @@ namespace App
 
         public SchoolContext()
         {
-
+            _conectionString = GetConnectionString();
+            _useConsoleLogger = true;
         }
 
         public SchoolContext(string conectionString, bool useConsoleLogger)
@@ -31,6 +33,7 @@ namespace App
                 .AddConsole();
             });
 
+            //todo: get migrations to pass a connectonstring
             optionsBuilder
                 .UseSqlServer(_conectionString);
 
@@ -58,6 +61,10 @@ namespace App
                 // getting all the students who have that curse as thier fav course
                 // but we don't want that (only student to course)
                 x.HasOne(p => p.FavoriteCourse).WithMany();
+
+                // a student can have many enrollments
+                // whereas one specific enrollement is only about one student
+                x.HasMany(p => p.Enrollments).WithOne(p => p.Student);
             });
 
             modelBuilder.Entity<Course>(x =>
@@ -66,6 +73,25 @@ namespace App
                 x.Property(p => p.Id).HasColumnName("CourseID");
                 x.Property(p => p.Name);
             });
+
+            modelBuilder.Entity<Enrollment>(_ =>
+            {
+                _.ToTable("Enrollment").HasKey(p => p.Id);
+                _.Property(p => p.Id).HasColumnName("EnrollmentId");
+                _.HasOne(p => p.Student).WithMany(p => p.Enrollments);
+                // empty '.WithMany()' means no navigation property back from course to enrollments
+                _.HasOne(p => p.Course).WithMany();
+                _.Property(p => p.Grade);
+            });
+        }
+
+        private static string GetConnectionString()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+
+            return config["ConnectionString"];
         }
     }
 }

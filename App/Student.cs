@@ -14,6 +14,8 @@ namespace App
         public string Email { get; private set; }
         public virtual Course FavoriteCourse { get; }
 
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
+
         //to satisfy the orm (EF), EF can apparently still access it (after change to protected), perhaps with reflection?
         //needed as the other ctor has a no primitive type as a parameter
         //System.InvalidOperationException: 'No suitable constructor found for entity type 'Student'. The following constructors had parameters that could not be bound to properties of the entity type: cannot bind 'favoriteCourse' in 'Student(string name, string email, Course favoriteCourse)'.'
